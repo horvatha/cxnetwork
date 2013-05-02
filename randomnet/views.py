@@ -22,7 +22,9 @@ def main(request):
 
 def throws(num, dice_sides=6):
     cmb = itertools.combinations(range(1,num+1), 2)
-    throws = {key: randint(1,dice_sides) for key in cmb}
+    throws = {}
+    for key in cmb:
+        throws[key] = randint(1,dice_sides)
     return throws
 
 def dice(request, num=12, flags=None):
@@ -84,7 +86,7 @@ td, tr {
         lo = igraph.Layout([(np.cos(d), np.sin(d)) for d in degs])
         filename = "igraph.png"
         igraph.plot(net, "{0}igraph.png".format(settings.MEDIA_ROOT), layout=lo, vertex_color="lightblue",bbox=(500,500))
-        fileurl = "{}{}".format(settings.MEDIA_URL, filename)
+        fileurl = "{0}{1}".format(settings.MEDIA_URL, filename)
         lines.append('<p>A kapott hálózat:<br><img src="{0}"></p>'.format(fileurl))
     if "D" in flags:
         deg = net.degree()
@@ -97,9 +99,9 @@ td, tr {
         filename = "degdist.png"
         plt.xlim([min(deg)-1, max(deg)+1])
         plt.ylim(ymin=0-max(dd)*.1, ymax = max(dd)*1.1)
-        plt.savefig("{}{}".format(settings.MEDIA_ROOT, filename))
+        plt.savefig("{0}{1}".format(settings.MEDIA_ROOT, filename))
         plt.close()
-        fileurl = "{}{}".format(settings.MEDIA_URL, filename)
+        fileurl = "{0}{1}".format(settings.MEDIA_URL, filename)
         lines.append('<p>A fokszámeloszlás:<br><img src="{0}"></p>'.format(fileurl))
         lines.append("<table>\n<tr><th>fokszám</th><th>darab</th><th>hányad</th></tr>")
         lines.append("<tr><th><i>k</i></th><th><i>N<sub>k</sub></i></th><th><i>p(k)</i></th></tr>")
